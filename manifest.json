@@ -1,0 +1,15 @@
+{
+  "name": "BETWEENaå",
+  "short_name": "BETWEENa",
+  "start_url": "./redirect.html",
+  "display": "standalone",
+  "background_color": "#fff",
+  "theme_color": "#3eaf7c",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "200x200",
+      "type": "image/png"
+    }
+  ]
+}

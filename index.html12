@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>安装</title>
+    <link rel="manifest" href="./manifest.json" />
+  </head>
+  <body>
+    <button id="install">点击安装</button>
+  </body>
+</html>
+<script>
+  alert(location.href);
+  // 检测浏览器是否支持SW
+  if (navigator.serviceWorker != null) {
+    navigator.serviceWorker
+      .register("/sw.js", { scope: "/" })
+      .then(function (registration) {
+        if (registration.installing) {
+          console.log("正在安装 Service worker");
+        } else if (registration.waiting) {
+          console.log("已安装 Service worker installed");
+        } else if (registration.active) {
+          console.log("激活 Service worker");
+        }
+      });
+  } else {
+    alert("不支持:");
+  }
+  var installPromptEvent = null;
+
+  window.addEventListener("beforeinstallprompt", (event) => {
+    event.preventDefault(); // Chrome <= 67 可以阻止显示
+    installPromptEvent = event; // 拿到事件的引用
+    document.querySelector("#install").disabled = false; // 更新安装 UI，通知用户可以安装
+    alert("安装开始");
+  });
+  document.querySelector("#install").addEventListener("click", () => {
+    if (!installPromptEvent) {
+      return;
+    }
+    installPromptEvent.prompt();
+    installPromptEvent.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === "accepted") {
+        console.log("用户已同意添加到桌面");
+      } else {
+        console.log("用户已取消添加到桌面");
+      }
+    });
+  });
+</script>
